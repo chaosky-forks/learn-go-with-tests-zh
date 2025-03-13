@@ -2,12 +2,16 @@
 
 set -e
 
-go get github.com/gorilla/websocket #todo vendor this or learn about the module stuff!
-go get -u github.com/client9/misspell/cmd/misspell
+go install github.com/client9/misspell/cmd/misspell@latest
+go install github.com/po3rin/gofmtmd/cmd/gofmtmd@latest
 
 ls *.md | xargs misspell -error
+
+for md_file in ./*.md; do
+    echo "formatting  file: $md_file"
+    gofmtmd  "$md_file" -r
+done
 
 go test ./...
 go vet ./...
 go fmt ./...
-golint ./...
